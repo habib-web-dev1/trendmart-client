@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Load DaisyUI plugin */
+@plugin "daisyui";
+
+/* Optional: Custom theme overrides (v4 exposes everything as CSS vars) */
+@layer base {
+  :root {
+    --rounded-box: 1rem; /* DaisyUI defaults, but you can tweak */
+    --animation-btn: 0.25s;
+    /* Add more if needed */
+  }
+}
