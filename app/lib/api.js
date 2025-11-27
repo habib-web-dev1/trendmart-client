@@ -1,5 +1,5 @@
 export const fetchProducts = async () => {
-  const absoluteUrl = "http://localhost:5000/products";
+  const absoluteUrl = "https://trendmart-server-six.vercel.app/products";
 
   console.log("Guaranteed fetch from:", absoluteUrl);
 
@@ -16,7 +16,7 @@ export const fetchProducts = async () => {
   }
 };
 export const fetchProductById = async (id) => {
-  const absoluteUrl = `http://localhost:5000/products/${id}`;
+  const absoluteUrl = `https://trendmart-server-six.vercel.app/products/${id}`;
 
   console.log("Fetching single product from:", absoluteUrl);
 

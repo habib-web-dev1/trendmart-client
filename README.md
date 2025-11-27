@@ -42,7 +42,7 @@
 | `/add-product`     | **Protected** | Form to submit a new product to the database.            |
 | `/manage-products` | **Protected** | List of products with options to View and Delete.        |
 
-### Server API Endpoints (Backend - `http://localhost:5000`)
+### Server API Endpoints (Backend - `https://trendmart-server-six.vercel.app/`)
 
 | Method   | Endpoint        | Description                                                               |
 | :------- | :-------------- | :------------------------------------------------------------------------ |

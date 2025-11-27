@@ -40,7 +40,7 @@ export default function ManageProductsPage() {
     if (result.isConfirmed) {
       try {
         const response = await fetch(
-          `http://localhost:5000/products/${productId}`,
+          `https://trendmart-server-six.vercel.app/products/${productId}`,
           {
             method: "DELETE",
           }
