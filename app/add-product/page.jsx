@@ -82,7 +82,7 @@ export default function AddProductPage() {
         <form onSubmit={handleSubmit}>
           <div className="form-control mb-4">
             <label className="label">
-              <span className="label-text">Title *</span>
+              <span className="label-text font-bold">Title *</span>
             </label>
 
             <input
@@ -98,7 +98,7 @@ export default function AddProductPage() {
 
           <div className="form-control mb-4">
             <label className="label">
-              <span className="label-text">
+              <span className="label-text font-bold">
                 Short Description (1-2 lines) *
               </span>
             </label>
@@ -116,7 +116,7 @@ export default function AddProductPage() {
 
           <div className="form-control mb-6">
             <label className="label">
-              <span className="label-text">Full Description *</span>
+              <span className="label-text font-bold">Full Description *</span>
             </label>
 
             <textarea
@@ -132,7 +132,7 @@ export default function AddProductPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Price ($) *</span>
+                <span className="label-text font-bold">Price ($) *</span>
               </label>
 
               <input
@@ -148,7 +148,7 @@ export default function AddProductPage() {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Category *</span>
+                <span className="label-text font-bold">Category *</span>
               </label>
 
               <input
@@ -164,7 +164,7 @@ export default function AddProductPage() {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Image URL (Optional)</span>
+                <span className="label-text font-bold">Image URL </span>
               </label>
 
               <input
@@ -187,7 +187,7 @@ export default function AddProductPage() {
               {loading ? (
                 <span className="loading loading-spinner"></span>
               ) : (
-                "Submit (Add Product)"
+                "Add Product"
               )}
             </button>
           </div>

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   FaBolt,
   FaShieldAlt,
@@ -161,17 +160,17 @@ const TestimonialSection = () => (
           {
             quote:
               "The best quality gadgets I've found online. Fast shipping and excellent support!",
-            author: "Alex R.",
+            author: "Alex Robin.",
           },
           {
             quote:
               "TrendMart is my go-to for all new tech releases. Highly recommend the Smartwatch Pro X.",
-            author: "Sam K.",
+            author: "Sam Bilings.",
           },
           {
             quote:
               "Consistent product quality and a beautiful, easy-to-use website. A five-star experience.",
-            author: "Jia L.",
+            author: "Jia Lal.",
           },
         ].map((testimonial, index) => (
           <div

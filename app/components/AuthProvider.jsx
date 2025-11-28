@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
-import { auth } from "@/lib/firebaseConfig";
-
+import { auth } from "../lib/firebaseConfig";
+import useSWR from "swr";
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);

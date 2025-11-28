@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaDollarSign, FaTag, FaInfoCircle } from "react-icons/fa";
+
 import { useAuth } from "./AuthProvider";
 import { fetchProductById } from "../lib/api";
 
@@ -63,15 +64,27 @@ export default function ProductDetailsClient({ productId }) {
           </div>
 
           <div className="w-full lg:w-1/2">
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-3">
-              {product.title}
-            </h1>
+            <header className="mb-8 border-b pb-6 border-gray-200">
+              <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+                {product.category || "Uncategorized"}
+              </div>
+
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                {product.title}
+              </h1>
+
+              <p className="mt-3 text-xl text-gray-600 max-w-4xl">
+                {product.shortDesc ||
+                  "Explore the features of this trendsetting product."}
+              </p>
+            </header>
 
             <div className="flex items-center space-x-6 mb-6">
               <span className="text-4xl font-bold text-primary flex items-center">
-                <FaDollarSign className="text-3xl mr-1" />
+                <FaDollarSign className="text-2xl mr-1" />
                 {product.price?.toFixed(2) || "N/A"}
               </span>
+
               <span className="badge badge-lg badge-outline text-gray-600 flex items-center">
                 <FaTag className="mr-1" /> {product.category || "Uncategorized"}
               </span>

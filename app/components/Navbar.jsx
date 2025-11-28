@@ -18,6 +18,8 @@ import Image from "next/image";
 export default function Navbar() {
   const { user } = useAuth();
   const currentPath = usePathname();
+  const pathname = usePathname();
+  const isProductsActive = pathname.startsWith("/products");
 
   const handleLogout = async () => {
     try {
@@ -34,7 +36,7 @@ export default function Navbar() {
 
     let classes = "hover:text-primary transition-colors duration-200";
     if (isActive) {
-      classes += " text-primary font-semibold border-b-2 border-primary";
+      classes += "text-primary font-semibold border-b-2 border-primary";
     }
     return classes;
   };
@@ -47,7 +49,17 @@ export default function Navbar() {
         </Link>
       </li>
       <li>
-        <Link href="/products" className={getNavLinkClass("/products")}>
+        <Link
+          href="/products"
+          className={`
+      hover:text-primary transition-colors duration-200
+      ${
+        isProductsActive
+          ? "hover:text-primary transition-colors duration-200 text-primary font-semibold border-b-2 border-primary"
+          : "text-gray-700 hover:text-primary"
+      }           // Default styles
+    `}
+        >
           Products
         </Link>
       </li>
