@@ -1,215 +1,104 @@
-# TrendMart: Full-Stack E-commerce Application
+<div align="center">
+
+# 🛒 TrendMart: Full-Stack E-commerce
+
+### _A Modern Shopping Experience built with Next.js 16 & Express.js_
+
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+
+[**Live Demo**](https://your-demo-url.vercel.app) | [**Client Repo**](https://github.com/habib-web-dev1/trendmart-client) | [**Server Repo**](https://github.com/habib-web-dev1/trendmart-server)
+
+</div>
+
+---
 
 ## 🌟 Project Description
 
-**TrendMart** is a modern full-stack e-commerce application built with Next.js 16 (App Router) and Express.js. The application features a comprehensive product catalog, secure authentication, shopping cart functionality, and protected admin pages for product management. The UI is responsive and polished, built with Tailwind CSS and DaisyUI.
-
-### ✨ Key Features
-
-- **🔐 Authentication**: Firebase Auth with Email/Password and Google OAuth
-- **🛡️ Protected Routes**: Secure access control for admin features
-- **🛍️ Shopping Experience**: Product browsing, search, filtering, cart, and wishlist
-- **📱 Responsive Design**: Mobile-first design with Tailwind CSS + DaisyUI
-- **⚡ Modern Stack**: Next.js 16, React 19, Express.js, MongoDB
-- **🎨 Rich UI**: Toast notifications, modals, loading states, and animations
-- **🔄 Real-time Updates**: Dynamic cart/wishlist with localStorage persistence
+**TrendMart** is a high-performance full-stack e-commerce application. It features a comprehensive product catalog, secure multi-method authentication, and a persistent shopping experience. Designed with a mobile-first approach, it offers a seamless interface for both customers and store administrators.
 
 ---
 
-## 🛠️ Technologies Used
+## ✨ Key Features
 
-### Frontend
-
-- **Next.js 16.1.1** - React framework with App Router
-- **React 19.2.3** - UI library with latest features
-- **Tailwind CSS 4.1.17** - Utility-first CSS framework
-- **DaisyUI 5.5.5** - Component library for Tailwind
-- **Firebase 12.6.0** - Authentication and user management
-
-### Backend
-
-- **Express.js 5.1.0** - Node.js web framework
-- **MongoDB 7.0.0** - NoSQL database
-- **CORS** - Cross-origin resource sharing
-
-### UI/UX Libraries
-
-- **React Icons** - Icon library
-- **Lucide React** - Modern icon set
-- **SweetAlert2** - Beautiful alerts and modals
-- **React Hot Toast** - Toast notifications
+- **🔐 Secure Authentication**: Firebase Auth supporting Email/Password and Google OAuth.
+- **🛡️ Admin Governance**: Protected routes for adding and managing product inventory.
+- **🛍️ Seamless Shopping**: Real-time search, category filtering, and price sorting.
+- **🛒 Persistent Cart**: Shopping cart and wishlist with `localStorage` persistence.
+- **🎨 Modern UI**: Built with Tailwind CSS 4 and DaisyUI 5, featuring skeleton loaders and toast notifications.
+- **📱 Fully Responsive**: Flawless experience across mobile, tablet, and desktop.
 
 ---
 
-## 🗺️ Route Summary
+## 🛠️ Tech Stack
+
+| Frontend                     | Backend            | Database & Tools   |
+| :--------------------------- | :----------------- | :----------------- |
+| **Next.js 16** (App Router)  | **Express.js 5.1** | **MongoDB 7.0**    |
+| **React 19** (Client/Server) | **Node.js**        | **Firebase Admin** |
+| **Tailwind CSS 4**           | **CORS**           | **Lucide Icons**   |
+| **DaisyUI 5**                | **Dotenv**         | **SweetAlert2**    |
+
+---
+
+## 🗺️ Navigation & API
 
 ### 🌐 Public Routes
 
-| Route            | Description                                                           |
-| ---------------- | --------------------------------------------------------------------- |
-| `/`              | Landing page with hero, features, testimonials, and featured products |
-| `/products`      | Product catalog with search, filter, and sort functionality           |
-| `/products/[id]` | Individual product details with related products                      |
-| `/login`         | User authentication (email/password + Google OAuth)                   |
-| `/register`      | User registration with profile setup                                  |
-| `/cart`          | Shopping cart with quantity management                                |
-| `/wishlist`      | Saved products for later                                              |
+- `/` — Landing page with Hero, Testimonials, and Featured items.
+- `/products` — Full catalog with advanced search/filter.
+- `/cart` & `/wishlist` — User-specific product collections.
+- `/login` & `/register` — Authentication gateway.
 
-### 🔒 Protected Routes (Authentication Required)
+### 🔒 Admin Routes (Auth Required)
 
-| Route              | Description                                   |
-| ------------------ | --------------------------------------------- |
-| `/add-product`     | Form to add new products to inventory         |
-| `/manage-products` | Product management dashboard with edit/delete |
+- `/add-product` — Inventory creation form.
+- `/manage-products` — Dashboard for CRUD operations.
 
-### 🔌 API Endpoints (Backend)
+### 🔌 Primary API Endpoints
 
-| Method   | Endpoint             | Description                |
-| -------- | -------------------- | -------------------------- |
-| `GET`    | `/products`          | Fetch all products         |
-| `GET`    | `/products/:id`      | Fetch single product by ID |
-| `POST`   | `/products`          | Create new product         |
-| `DELETE` | `/products/:id`      | Delete product by ID       |
-| `POST`   | `/users`             | Save user to database      |
-| `GET`    | `/users/role/:email` | Get user role              |
-
----
-
-## 📋 Implemented Features
-
-### ✅ Core Features (Fully Implemented)
-
-- **Landing Page**: 7 sections including Hero, Features, Featured Products, Banner, Testimonials, Navbar, and Footer
-- **Authentication**: Mock login with hardcoded credentials + Firebase Auth (email/password + Google)
-- **Product Catalog**: Public product listing with search, category filter, and price sorting
-- **Product Details**: Individual product pages with full details and related products
-- **Protected Admin Pages**: Add and manage products (authentication required)
-- **Shopping Cart**: Add/remove items, quantity management, localStorage persistence
-- **Wishlist**: Save products for later with toggle functionality
-- **Toast Notifications**: Success/error feedback for all user actions
-- **Responsive Design**: Mobile-first approach with modern UI components
-
-### 🎯 Additional Enhancements
-
-- **User Profile Management**: Display user info in navbar with logout
-- **Recently Viewed**: Track and display recently viewed products
-- **Advanced Filtering**: Category-based filtering and price sorting
-- **Loading States**: Skeleton screens and loading indicators
-- **Error Handling**: Comprehensive error handling with user-friendly messages
-- **SEO Optimization**: Static generation for product pages
-- **Performance**: Image optimization and lazy loading
+- `GET /products` — Fetch all products.
+- `POST /products` — Create new inventory (Admin).
+- `DELETE /products/:id` — Remove items (Admin).
+- `GET /users/role/:email` — Verify user permissions.
 
 ---
 
 ## 🚀 Setup & Installation
 
-### Prerequisites
-
-- Node.js 18+ and npm
-- MongoDB database
-- Firebase project for authentication
-
-### 1. Clone the Repository
+### 1. Clone the Repositories
 
 ```bash
-git clone <repository-url>
-cd trendmart
+git clone [https://github.com/habib-web-dev1/trendmart-client.git](https://github.com/habib-web-dev1/trendmart-client.git)
+git clone [https://github.com/habib-web-dev1/trendmart-server.git](https://github.com/habib-web-dev1/trendmart-server.git)
 ```
-
-### 2. Setup Client (Frontend)
-
-```bash
-cd trendmart-client
-npm install
-```
-
-Create `.env.local` file:
-
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
-```
-
-### 3. Setup Server (Backend)
-
-```bash
-cd trendmart-server
-npm install
-```
-
-Create `.env` file:
-
-```env
-PORT=5000
-DB_USER=your_mongodb_username
-DB_PASS=your_mongodb_password
-NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
-```
-
-### 4. Run the Application
-
-```bash
-# Start the backend server
-cd trendmart-server
-npm run dev
-
-# Start the frontend (in another terminal)
-cd trendmart-client
-npm run dev
-```
-
-Visit `http://localhost:3000` to view the application.
-
-### 5. Demo Login (Optional)
-
-For quick testing, you can use the demo credentials:
-
-- **Email**: demo@trendmart.com
-- **Password**: demo123
-
-_Note: You'll need to create this user in your Firebase console or register it through the app first._
-
----
-
-## 🎯 Brief Feature Explanations
-
-### Authentication System
-
-- **Firebase Integration**: Secure authentication with email/password and Google OAuth
-- **Protected Routes**: Automatic redirection for unauthenticated users accessing admin pages
-- **User Sync**: User data synchronized between Firebase and MongoDB
-
-### Product Management
-
-- **Dynamic Catalog**: Products fetched from Express.js API connected to MongoDB
-- **Search & Filter**: Real-time search with category filtering and price sorting
-- **CRUD Operations**: Full create, read, and delete functionality for products
-- **Image Handling**: URL-based image storage with optimization
-
-### Shopping Experience
-
-- **Cart System**: Persistent shopping cart with quantity management
-- **Wishlist**: Save products for later with visual feedback
-- **Product Details**: Comprehensive product pages with related items
-- **Responsive Design**: Optimized for all device sizes
-
-### Admin Features
-
-- **Product Addition**: Rich form for adding new products with validation
-- **Inventory Management**: View, edit, and delete products with confirmation dialogs
-- **User Management**: Backend support for user roles and permissions
 
 ---
 
 ## 🔧 Development Notes
 
-- **Next.js App Router**: Utilizes the latest Next.js routing system
-- **Server Components**: Mix of server and client components for optimal performance
-- **State Management**: Context API for authentication and cart state
-- **Error Boundaries**: Comprehensive error handling throughout the application
-- **TypeScript Ready**: JSConfig setup for enhanced development experience
+- **⚛️ React 19 Ecosystem**: Leverages the cutting-edge features of React 19, including the `use` hook for cleaner data fetching and `startTransition` for non-blocking UI updates.
+- **🚀 Optimized Performance**:
+  - **Static Generation**: Product pages are pre-rendered for lightning-fast load times and SEO.
+  - **Image Optimization**: Next.js `<Image />` component utilized for lazy loading and automatic resizing.
+- **🧩 Component Architecture**: Built using an **Atomic Design** approach. Components are modular, reusable, and styled consistently using **DaisyUI** and **Tailwind CSS**.
+
+---
+
+## 📬 Contact & Support
+
+<div align="center">
+
+**I am always open to discussing new projects, creative ideas, or opportunities to be part of your vision.**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahsan-habib-coder/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/habib-web-dev1)
+[![Email](https://img.shields.io/badge/Email-habibmdahsan08%40gmail.com-EE4B2B?style=for-the-badge&logo=gmail&logoColor=white)](mailto:habibmdahsan08@gmail.com)
+
+<br/>
+
+**Md Ahsan Habib** _MERN Stack Developer_
+
+</div>

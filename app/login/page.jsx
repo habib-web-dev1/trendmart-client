@@ -12,6 +12,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 import { loginWithGoogle, loginWithEmail } from "../lib/firebaseConfig";
+import { syncUserToMongoDB } from "../lib/userSync";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,31 +21,18 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  // Helper to ensure MongoDB has the user (important for Google Login)
-  const syncUserWithDB = async (user) => {
-    const userInfo = {
-      name: user.displayName,
-      email: user.email,
-      uid: user.uid,
-      image: user.photoURL,
-    };
-
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userInfo),
-      });
-    } catch (error) {
-      console.error("Auth sync error:", error);
-    }
-  };
-
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await loginWithEmail(email, password);
+      const result = await loginWithEmail(email, password);
+
+      // Sync user to MongoDB (in case they registered elsewhere or this is first login)
+      const syncResult = await syncUserToMongoDB(result.user);
+      if (!syncResult.success) {
+        console.warn("MongoDB sync failed:", syncResult.error);
+      }
+
       Swal.fire({
         title: "Welcome Back!",
         text: "Successfully logged into TrendMart.",
@@ -64,8 +52,12 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const result = await loginWithGoogle();
-      // We sync here because Google Login acts as both Login and Registration
-      await syncUserWithDB(result.user);
+
+      // Sync user to MongoDB (Google Login acts as both Login and Registration)
+      const syncResult = await syncUserToMongoDB(result.user);
+      if (!syncResult.success) {
+        console.warn("MongoDB sync failed:", syncResult.error);
+      }
 
       Swal.fire({
         title: "Google Login Success",

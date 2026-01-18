@@ -14,6 +14,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 import { loginWithGoogle, registerWithEmail } from "../lib/firebaseConfig";
+import { syncUserToMongoDB } from "../lib/userSync";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -27,13 +28,14 @@ export default function RegisterPage() {
   // Sync Firebase User with MongoDB
   const saveUserToDB = async (user, displayName, photo) => {
     const userInfo = {
-      name: displayName,
+      name:
+        displayName || user.displayName || user.email?.split("@")[0] || "User",
       email: user.email,
       uid: user.uid,
-      image: photo || "",
+      image: photo || user.photoURL || "",
     };
 
-    console.log("Attempting to save user to MongoDB:", userInfo); // DEBUG 1
+    console.log("Attempting to save user to MongoDB:", userInfo);
 
     try {
       const response = await fetch(
@@ -45,11 +47,17 @@ export default function RegisterPage() {
         }
       );
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      console.log("Server response:", data); // DEBUG 2
+      console.log("Server response:", data);
       return data;
     } catch (error) {
-      console.error("Fetch Error:", error); // DEBUG 3
+      console.error("MongoDB sync error:", error);
+      // Don't throw error - registration should still work even if MongoDB sync fails
+      return { error: error.message };
     }
   };
 
@@ -61,7 +69,10 @@ export default function RegisterPage() {
       const result = await registerWithEmail(email, password, name, imageURL);
 
       // 2. MongoDB Sync
-      await saveUserToDB(result.user, name, imageURL);
+      const syncResult = await syncUserToMongoDB(result.user);
+      if (!syncResult.success) {
+        console.warn("MongoDB sync failed:", syncResult.error);
+      }
 
       Swal.fire("Success", "Account created successfully!", "success");
       router.push("/");
@@ -76,11 +87,12 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const result = await loginWithGoogle();
-      await saveUserToDB(
-        result.user,
-        result.user.displayName,
-        result.user.photoURL
-      );
+
+      // Sync user to MongoDB
+      const syncResult = await syncUserToMongoDB(result.user);
+      if (!syncResult.success) {
+        console.warn("MongoDB sync failed:", syncResult.error);
+      }
 
       Swal.fire("Success", "Welcome to TrendMart!", "success");
       router.push("/");
