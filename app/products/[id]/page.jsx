@@ -24,3 +24,4 @@ export async function generateStaticParams() {
     })
     .filter(Boolean);
 }
+export const dynamicParams = true;

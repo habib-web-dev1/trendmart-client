@@ -76,7 +76,7 @@ const FeatureSection = () => (
             key={index}
             className="group card bg-base-100 shadow-lg border-t-4 border-primary/50 p-6 text-center
                        transition-all duration-500 hover:border-primary hover:shadow-2xl
-                       hover:bg-gradient-to-br from-primary/5 to-base-100"
+                       hover:bg-linear-to-br from-primary/5 to-base-100"
           >
             <div className="flex justify-center mb-4">
               <feature.icon className="w-10 h-10 text-primary transition-colors duration-500 group-hover:text-secondary" />

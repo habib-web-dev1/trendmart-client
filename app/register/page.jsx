@@ -1,12 +1,15 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   FaEnvelope,
   FaLock,
   FaUserPlus,
   FaUser,
   FaImage,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
@@ -18,25 +21,52 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Toggle State
+  const router = useRouter();
+
+  // Sync Firebase User with MongoDB
+  const saveUserToDB = async (user, displayName, photo) => {
+    const userInfo = {
+      name: displayName,
+      email: user.email,
+      uid: user.uid,
+      image: photo || "",
+    };
+
+    console.log("Attempting to save user to MongoDB:", userInfo); // DEBUG 1
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userInfo),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Server response:", data); // DEBUG 2
+      return data;
+    } catch (error) {
+      console.error("Fetch Error:", error); // DEBUG 3
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await registerWithEmail(email, password, name, imageURL);
+      // 1. Firebase Auth
+      const result = await registerWithEmail(email, password, name, imageURL);
 
-      Swal.fire(
-        "Success",
-        "Registration successful! You are now logged in.",
-        "success"
-      );
+      // 2. MongoDB Sync
+      await saveUserToDB(result.user, name, imageURL);
+
+      Swal.fire("Success", "Account created successfully!", "success");
+      router.push("/");
     } catch (error) {
-      console.error("Registration error:", error.message);
-      Swal.fire(
-        "Error",
-        error.message || "Registration failed. Please try again.",
-        "error"
-      );
+      Swal.fire("Error", error.message, "error");
     } finally {
       setLoading(false);
     }
@@ -45,125 +75,146 @@ export default function RegisterPage() {
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      await loginWithGoogle();
-      Swal.fire("Success", "Login with Google successful!", "success");
+      const result = await loginWithGoogle();
+      await saveUserToDB(
+        result.user,
+        result.user.displayName,
+        result.user.photoURL
+      );
+
+      Swal.fire("Success", "Welcome to TrendMart!", "success");
+      router.push("/");
     } catch (error) {
-      console.error("Google login error:", error.message);
-      Swal.fire("Error", error.message || "Google login failed.", "error");
+      Swal.fire("Error", error.message, "error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[70vh] py-10">
-      <div className="card w-full max-w-md bg-white shadow-xl border border-gray-100 transform transition-all duration-500 hover:shadow-2xl">
+    <div className="flex justify-center items-center min-h-[90vh] py-10 px-4">
+      <div className="card w-full max-w-md bg-white shadow-2xl border border-gray-100">
         <div className="card-body">
-          <h2 className="card-title text-4xl justify-center mb-2 font-extrabold text-primary">
-            <FaUserPlus className="text-3xl" /> Register
-          </h2>
-          <p className="text-center text-gray-500 mb-6">
-            Join TrendMart today!
-          </p>
+          <header className="text-center mb-6">
+            <h2 className="text-4xl justify-center flex items-center gap-3 font-black text-primary">
+              <FaUserPlus /> Register
+            </h2>
+            <p className="text-gray-500 mt-2">Join the TrendMart community</p>
+          </header>
 
+          {/* Social Login */}
           <button
             onClick={handleGoogleLogin}
-            className="btn btn-block btn-outline btn-primary hover:bg-primary/10 mb-4"
+            className="btn btn-block btn-outline btn-primary gap-3 normal-case text-lg"
             disabled={loading}
           >
-            <FcGoogle className="w-5 h-5" /> Continue with Google
+            <FcGoogle className="text-2xl" /> Continue with Google
           </button>
 
-          <div className="divider text-gray-400">OR Use Email</div>
+          <div className="divider text-gray-400 text-xs uppercase tracking-widest">
+            OR
+          </div>
 
-          <form onSubmit={handleRegister}>
+          {/* Registration Form */}
+          <form onSubmit={handleRegister} className="space-y-4">
             <div className="form-control">
-              <label className="label">
-                <span className="label-text flex items-center font-medium">
-                  <FaUser className="mr-2" /> Name
-                </span>
-              </label>
-              <input
-                type="text"
-                placeholder="Your Full Name"
-                className="input input-bordered w-full"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text flex items-center font-medium">
-                  <FaImage className="mr-2" /> Profile Image URL
-                </span>
-              </label>
-              <input
-                type="url"
-                placeholder="https://example.com/image.jpg"
-                className="input input-bordered w-full"
-                value={imageURL}
-                onChange={(e) => setImageURL(e.target.value)}
-              />
+              <label className="label font-bold text-gray-700">Full Name</label>
+              <div className="relative">
+                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="input input-bordered w-full pl-12 rounded-xl"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
             <div className="form-control">
-              <label className="label">
-                <span className="label-text flex items-center font-medium">
-                  <FaEnvelope className="mr-2" /> Email
-                </span>
+              <label className="label font-bold text-gray-700">
+                Profile Image URL
               </label>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="input input-bordered w-full"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <FaImage className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="url"
+                  placeholder="https://example.com/photo.jpg"
+                  className="input input-bordered w-full pl-12 rounded-xl"
+                  value={imageURL}
+                  onChange={(e) => setImageURL(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className="form-control mb-6">
-              <label className="label">
-                <span className="label-text flex items-center font-medium">
-                  <FaLock className="mr-2" /> Password
-                </span>
-              </label>
-              <input
-                type="password"
-                placeholder="minimum 6 characters"
-                className="input input-bordered w-full"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-            </div>
             <div className="form-control">
-              <button
-                type="submit"
-                className="btn btn-primary btn-block text-lg"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="loading loading-spinner"></span>
-                ) : (
-                  "Create Account"
-                )}
-              </button>
+              <label className="label font-bold text-gray-700">
+                Email Address
+              </label>
+              <div className="relative">
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="email"
+                  placeholder="name@example.com"
+                  className="input input-bordered w-full pl-12 rounded-xl"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
             </div>
+
+            <div className="form-control">
+              <label className="label font-bold text-gray-700">Password</label>
+              <div className="relative">
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="input input-bordered w-full px-12 rounded-xl"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+                {/* Toggle Icon */}
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash size={20} />
+                  ) : (
+                    <FaEye size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className={`btn btn-primary btn-block rounded-xl text-lg mt-4 ${
+                loading && "loading"
+              }`}
+              disabled={loading}
+            >
+              {!loading && "Create Free Account"}
+            </button>
           </form>
 
-          <p className="text-center mt-6 text-sm">
-            Already have an account?
-            <Link
-              href="/login"
-              className="link link-hover font-bold text-primary"
-            >
-              Login here
-            </Link>
-          </p>
+          <footer className="text-center mt-8">
+            <p className="text-sm text-gray-600">
+              Already a member?{" "}
+              <Link
+                href="/login"
+                className="font-bold text-primary hover:underline"
+              >
+                Sign In
+              </Link>
+            </p>
+          </footer>
         </div>
       </div>
     </div>
